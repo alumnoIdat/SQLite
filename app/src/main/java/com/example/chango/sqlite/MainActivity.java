@@ -110,4 +110,78 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "No se encuentra",
                     Toast.LENGTH_SHORT).show();
     }
+
+    public void inicio(View view){
+        AdminSQLite admin = new AdminSQLite(this,
+                "administracion", null, 1);
+        SQLiteDatabase bd = admin.getWritableDatabase();
+        fila = bd.rawQuery("select * from votantes order by dni asc ",
+                null);
+        if (fila.moveToFirst()) {
+            et1.setText(fila.getString(0));
+            et2.setText(fila.getString(1));
+            et3.setText(fila.getString(2));
+            et4.setText(fila.getString(3));
+        } else
+            Toast.makeText(this, "No hay registrados" ,
+                    Toast.LENGTH_SHORT).show();
+        bd.close();
+    }
+
+    public void anterior(View view){
+        try {
+            if (!fila.isFirst()) {
+                fila.moveToPrevious();
+                et1.setText(fila.getString(0));
+                et2.setText(fila.getString(1));
+                et3.setText(fila.getString(2));
+                et4.setText(fila.getString(3));
+            } else
+                Toast.makeText(this, "Inicio de la tabla",
+                        Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void siguiente(View view){
+        try {
+            if (!fila.isLast()) {
+                fila.moveToNext();
+                et1.setText(fila.getString(0));
+                et2.setText(fila.getString(1));
+                et3.setText(fila.getString(2));
+                et4.setText(fila.getString(3));
+            } else
+                Toast.makeText(this, "Llegó al final",
+                        Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void fin(View view){
+        AdminSQLite admin = new AdminSQLite(this,
+                "administracion", null, 1);
+        SQLiteDatabase bd = admin.getWritableDatabase();
+        Cursor fila = bd.rawQuery(
+                "select * from votantes order by dni asc ", null);
+        if (fila.moveToLast()) {
+            et1.setText(fila.getString(0));
+            et2.setText(fila.getString(1));
+            et3.setText(fila.getString(2));
+            et4.setText(fila.getString(3));
+        } else
+            Toast.makeText(this, "No hay registros" ,
+                    Toast.LENGTH_SHORT).show();
+        bd.close();
+    }
+
+    public void onReset(View view){
+        et1.setText("");
+        et2.setText("");
+        et3.setText("");
+        et4.setText("");
+    }
+
 }
